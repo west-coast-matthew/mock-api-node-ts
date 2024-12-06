@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="../index.css">
+    </head>
+    <body>
+        <h1>List customers</h1>
+        
+        <h2>Preview</h2>
+        <div id="customer-list">
+
+        </div>
+
+        <h2>JSON</h2>
+        <div id="json-panel">
+
+        </div>
+
+        <script>
+            const loadCustomers = function(){
+                fetch('http://localhost:3000/customer').then(response=>response.json())
+                .then((customers)=>{
+                    const displayPanel = document.getElementById('customer-list');
+                    console.log(customers);
+                    console.log(customers[0]);
+                    customers.forEach((curCustomer)=>{
+
+                        const record = document.createElement('div');
+                        record.innerHTML = `${curCustomer.firstName} ${curCustomer.lastName}`;
+                        displayPanel.append(record);
+                    });
+
+                    document.getElementById('json-panel').innerText = JSON.stringify(customers); 
+                });
+            }
+
+            loadCustomers();
+        </script>
+
+    </body>
+</html>

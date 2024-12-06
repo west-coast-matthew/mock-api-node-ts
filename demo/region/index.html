@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="./index.css">
+    </head>
+    <body>
+        <h1>Region/State (Intro)</h1>
+
+        <p>
+            An example of working with a set of data which seldom changes, limited 
+            records exist, and therefore pagination does not come into play. 
+        </p>
+
+        <p>
+            Think 'data that drives drop down menus'.
+        </p>
+
+        <p>
+            For these calls, we will provide additional HTTP header data that willgive clues
+            to the client that will enable them to perform client side caching.
+        </p>
+        
+        <h1>Example</h1>
+        <div>
+            <select id="regions">
+                <option>Select Region</option>
+            </select>
+        </div>
+
+        <h1>JSON</h1>
+        <div id="json-panel">
+
+        </div>
+        <script>
+            const loadRegions = function(){
+                fetch('http://localhost:3000/region').then(response=>response.json())
+                .then((regions)=>{
+                    console.log(regions);
+                    const dropdown = document.getElementById('regions');
+
+                    regions.forEach((curRegion)=>{
+                        const opt = document.createElement('option');
+                        opt.text = `${curRegion.name} (${curRegion.code})`;
+                        dropdown.add(opt);
+                    });
+
+
+                    document.getElementById('json-panel').innerHTML = JSON.stringify(regions);
+                });
+            }
+
+            loadRegions();
+        </script>
+    </body>
+</html>
