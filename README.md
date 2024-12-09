@@ -1,63 +1,55 @@
-#Mock API (NodeJS)!
 
-## Background
-	
-Over the past several years I have made a series of 'one off' API services intended to serve mock data to requests. I finally decided to consolidate these into a project, and share with the community.
+![Alt text](images/mock-api.png)
 
-* Serve realistic sets of data
-* Provide pagination
-* Support for generating binary data such as PDFs and Images
-* Emulate delays in responses 
-* Produce very large files which require streaming approaches to consume
+#Mock API
 
-## API Endpoints
+#Background
+I have been recently working on a side project which involves a lot of downloading operations. In the past I have worked with mock data as needed, and finally decided to formalize my efforts and share with the community.
 
-For most API endpoints, an URL parameter may be provided to 'force' as delay in the response time. This allows the consumer (namely Javascript clients) to handle long running operations. Values are given in seconds, or a string value of 'random' may be provided to varying times (Resulting in a 3 to 90 seccond delay). For example, given the following calls:
-	
-	/mock/customer?delay=10
-	/mock/pdf/pdf_one?delay=90
+This project is a NodeJS based effort to provide APIs that serve mock data for development purposes. The following calls are supported, I will be adding  new use cases in the future as needed.
 
-This first call would ultimately return after 10 seconds, and the in the second call a delay of a minute and a half would be imposed.
+##API endpoints
+###Binary files
+Provides binary files, both small and larger.
+
+`./files/`
+Emulates a list of files for download.
+
+`./files/[file name]`
+Downloads a selected file. The reference to to the *file name* is irrelevant, an empty file will be returned. This method will also accept the HTTP GET variable 'size' which will allow the caller to indicate the desired size that the returned file should assume. Additionally, the parameter 'cache' can be used to indicate to the API that it should return HTTP header information (cache-control) which an HTTP client can use to determine if it should cache the respones.
 
 ###Customer data
+Paginated sample customer/person data
 
-Upon API initialization, a large dataset of customers is created and stored server side in memory. Th eidea here is to present a set of data that will required pagination for requests.
+`/customers/`
+Returns a paginated set of customers.
 
-####Listing customers (HTTP GET)
-Presents a list of customers. By default, pagination is applied.
-
-*/mock/cutomers*
-
-#### Creating a customer (HTTP POST)
-*/mock/cutomer
-
-####Creating/updating customers (HTTP PUT)
-*/mock/customer
-
-The id parameter present in the payload must match an existing record.
-
-###State/Regional data
-/mock/states
-
-###PDF documents
-Support for requesting PDF documents is provided. Methods exist for requesting documents by specific names, and by artifical names. In the first case, we may make requests that allow us to test client side caching, and in the second we support the ability to 
-
-Downloading a PDF file
-/mock/pdf
-
-
+`/customer/[customer id]`
+Returns a customer by it's unique id.
 
 ###Images
-Support for image data is provided. 
+Creates images both full sized and thumbnails.
 
-Downloading an image
-/mock/image/
+`/images`
+Returns a list of images.
 
-Downloding random image thumbnails
-/mock/image/thumbnail
+`/images/[image id]`
+Returns an PNG image by ID.
 
-###Large binary files.
+###PDF 
+PDF files, which seems to be a popular use case.
 
+`/pdf`
+Returns a list of PDFs.
+
+`/pdf/[pdf id]`
+Emulates a fetch operation for a selected PDF document. This endpoint also accepts the GET parameter 'pages', which will define the number of pages that should be rendered by the server, usefull when emulatiung large documents.
+
+
+###States/regions
+An example data that seldom changes. HTTP Headers will inform the client that the data may be cached for a specified period of time. Usefull for buildiug and testing clients that make use of caching.
 
 ##Starting the application
-npm run start
+Simple, just execute `npm run start`
+
+You can find more details on my personal blog [https://www.matthewdalby.dev]()
