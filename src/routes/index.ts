@@ -6,6 +6,7 @@ import imageRouter from './image.router';
 import pdfRouter from './pdf.router';
 import statesRouter from './states.router';
 import demoRouter from './demo.route';
+import fileRouter from './binaryFile.router';
 
 const router = Router();
 
