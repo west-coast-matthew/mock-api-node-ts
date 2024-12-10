@@ -1,63 +1,78 @@
 
 ![Alt text](images/mock-api.png)
 
-# Mock API
+#Mock API (NodeJS)!
 
-# Background
-I have been recently working on a side project which involves a lot of downloading operations. In the past I have worked with mock data as needed, and finally decided to formalize my efforts and share with the community.
+## Background
+	
+Over the past several years I have made a series of 'one off' API services intended to serve mock data to requests. I finally decided to consolidate these into a project, and share with the community.
 
-This project is a NodeJS based effort to provide APIs that serve mock data for development purposes. The following calls are supported, I will be adding  new use cases in the future as needed.
+### Core goals
+1. Provide an API to consumer various types of data, including JSON and binary formats
+2. For JSON formats, we emulate a call which produces data both on paginated and non paginated sets.
+3. Support image operations, inclusive of thumbnail and full size versions.
+4. Provide the ability to emulate binary streams. 
+5. Accept optional parameters which will indicate to the API that it should provide cache related in the headers.
 
-## API endpoints
-### Binary files
-Provides binary files, both small and larger.
+## Common functionality
+Most calls support the ability to emulate delayed response times, this is usefull when experimenting with progress indicators from a UI perspective.
 
-`./files/`
+Additionally, most calls support the ability to force the API to respond caching related headers, indicating to the client that there is an expiration date on the data, which provides the ability for the client to cache data according to the expiration date.
 
-Emulates a list of files for download.
+* Serve realistic sets of data
+* Provide pagination
+* Support for generating binary data such as PDFs and Images
+* Emulate delays in responses 
+* Produce very large files which require streaming approaches to consume
 
-`./files/[file name]`
+## API Endpoints
 
-Downloads a selected file. The reference to to the *file name* is irrelevant, an empty file will be returned. This method will also accept the HTTP GET variable 'size' which will allow the caller to indicate the desired size that the returned file should assume. Additionally, the parameter 'cache' can be used to indicate to the API that it should return HTTP header information (cache-control) which an HTTP client can use to determine if it should cache the respones.
+For most API endpoints, an URL parameter may be provided to 'force' as delay in the response time. This allows the consumer (namely Javascript clients) to handle long running operations. Values are given in seconds, or a string value of 'random' may be provided to varying times (Resulting in a 3 to 90 seccond delay). For example, given the following calls:
+	
+	/mock/customer?delay=10
+	/mock/pdf/pdf_one?delay=90
+
+This first call would ultimately return after 10 seconds, and the in the second call a delay of a minute and a half would be imposed.
 
 ### Customer data
-Paginated sample customer/person data
 
-`/customers/`
+Upon API initialization, a large dataset of customers is created and stored server side in memory. Th eidea here is to present a set of data that will required pagination for requests.
 
-Returns a paginated set of customers.
+#### Listing customers (HTTP GET)
+Presents a list of customers. By default, pagination is applied.
 
-`/customer/[customer id]`
+*/mock/cutomers*
 
-Returns a customer by it's unique id.
+#### Creating a customer (HTTP POST)
+*/mock/cutomer
+
+####Creating/updating customers (HTTP PUT)
+*/mock/customer
+
+The id parameter present in the payload must match an existing record.
+
+### State/Regional data
+/mock/states
+
+### PDF documents
+Support for requesting PDF documents is provided. Methods exist for requesting documents by specific names, and by artifical names. In the first case, we may make requests that allow us to test client side caching, and in the second we support the ability to 
+
+Downloading a PDF file
+/mock/pdf
 
 ### Images
-Creates images both full sized and thumbnails.
+Support for image data is provided. 
 
-`/images`
+Downloading an image
+/mock/image/
 
-Returns a list of images.
+Downloding random image thumbnails
+/mock/image/thumbnail
 
-`/images/[image id]`
-
-Returns an PNG image by ID.
-
-### PDF 
-PDF files, which seems to be a popular use case.
-
-`/pdf`
-
-Returns a list of PDFs.
-
-`/pdf/[pdf id]`
-
-Emulates a fetch operation for a selected PDF document. This endpoint also accepts the GET parameter 'pages', which will define the number of pages that should be rendered by the server, usefull when emulatiung large documents.
-
-
-### States/regions
-An example data that seldom changes. HTTP Headers will inform the client that the data may be cached for a specified period of time. Usefull for buildiug and testing clients that make use of caching.
+### Large binary files.
+Provides the ability to emulate large file downloads. File by default are empty binary streams, with an estimated size of 50MB by defailt. Desired Filesize may be specified via HTTP GET parameters via the name 'fileSize' which accepts a numberic value indicating the size in megabytes. As with other calls, the GET parameter 'delay' may be used to emulate a delay before the reponse is sent. 
 
 ## Starting the application
-Simple, just execute `npm run start`
+npm run start
 
 You can find more details on my personal blog [https://www.matthewdalby.dev]()

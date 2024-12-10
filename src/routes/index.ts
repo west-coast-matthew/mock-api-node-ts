@@ -13,6 +13,7 @@ router.use('/customer', customerRouter);
 router.use('/image', imageRouter);
 router.use('/pdf', pdfRouter);
 router.use('/region', statesRouter);
+router.use('/file', fileRouter);
 // router.use('/demo', express.static('demo'));
 
 export default router;
