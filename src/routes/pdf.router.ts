@@ -66,9 +66,8 @@ router.get('/:id', async(req: Request, res: Response)=>{
   const title = `Document ${pdfRef}`;
 
   page.drawText(title, {x:( 50), y:800});
+
   
-  // const textLine = { text:'CERTIFICATE OF COMPLETION', color:rgb(0,0,0), fontSize:24, marginTop:0 };
-  //const textWidth = font.widthOfTextAtSize(textLine.text, textLine.fontSize);
 
   for(let x=1;x<11;x++){
     page = pdfDoc.addPage();
@@ -77,8 +76,6 @@ router.get('/:id', async(req: Request, res: Response)=>{
     const text = page.drawText(fillerText, {
       x: 50,
       y: 700,
-      // size: textLine.fontSize,
-      // color: textLine.color,
       maxWidth: 500, 
       wordBreaks: [" "]
     });

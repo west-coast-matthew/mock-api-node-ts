@@ -28,7 +28,13 @@ router.get('/:id', (req: Request, res: Response)=>{
     const fileContents = createEmptyFileInMemory(fileSize);
 
     res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Length', fileContents.length);
+    //TODO: Conditionally send length of file in headers.
+    console.log(req.params.returnLength);
+    //if(req.params.returnLength ){
+        res.setHeader('Content-Length', fileContents.length);
+    //}
+    
+    
     res.send(fileContents);
     res.end();
 });

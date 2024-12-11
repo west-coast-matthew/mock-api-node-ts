@@ -10,11 +10,11 @@ import fileRouter from './binaryFile.router';
 
 const router = Router();
 
-router.use('/customer', customerRouter);
-router.use('/image', imageRouter);
-router.use('/pdf', pdfRouter);
-router.use('/region', statesRouter);
-router.use('/file', fileRouter);
+router.use('/mock/customer', customerRouter);
+router.use('/mock/image', imageRouter);
+router.use('/mock/pdf', pdfRouter);
+router.use('/mock/region', statesRouter);
+router.use('/mock/file', fileRouter);
 // router.use('/demo', express.static('demo'));
 
 export default router;
